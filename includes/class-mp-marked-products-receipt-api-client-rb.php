@@ -100,6 +100,40 @@ final class MP_Marked_Products_Receipt_ApiClient_RB {
 	}
 
 	/**
+	 * Reachability check (same pattern as mp_robokassa_receipt2): POST `{}` to RoboFiscal Attach.
+	 *
+	 * @return array{ok:bool,status_code:int,message:string}
+	 */
+	public static function ping_reachability(): array {
+		$url = 'https://ws.roboxchange.com/RoboFiscal/Receipt/Attach';
+		$response = wp_remote_post($url, [
+			'timeout' => 10,
+			'headers' => ['Content-Type' => 'application/json'],
+			'body' => '{}',
+		]);
+
+		if (is_wp_error($response)) {
+			return [
+				'ok' => false,
+				'status_code' => 0,
+				'message' => 'WP_Error: ' . $response->get_error_message(),
+			];
+		}
+
+		$status_code = (int) wp_remote_retrieve_response_code($response);
+		$ok = $status_code > 0;
+		$msg = $ok
+			? __('Точка доступна (тело запроса невалидно для API — это нормально для проверки сети).', 'mp-marked-products-receipt')
+			: __('Пустой или неожиданный HTTP-статус.', 'mp-marked-products-receipt');
+
+		return [
+			'ok' => $ok,
+			'status_code' => $status_code,
+			'message' => $msg,
+		];
+	}
+
+	/**
 	 * @return array{login:string,password1:string,country:string}
 	 */
 	private static function resolve_credentials(): array {

@@ -101,6 +101,75 @@ final class MP_Marked_Products_Receipt_ApiClient_YK {
 	}
 
 	/**
+	 * Diagnostic: GET a non-existent payment by UUID. HTTP 404 means credentials are accepted; 401/403 means auth failure.
+	 * Does not create a receipt.
+	 *
+	 * @return array{ok:bool,status_code:int,message:string,body_excerpt:string}
+	 */
+	public static function ping(): array {
+		$shop_id = trim(MP_Marked_Products_Receipt_Settings::get_yk_shop_id());
+		$secret_key = trim(MP_Marked_Products_Receipt_Settings::get_yk_secret_key());
+		$out = [
+			'ok' => false,
+			'status_code' => 0,
+			'message' => '',
+			'body_excerpt' => '',
+		];
+
+		if ($shop_id === '' || $secret_key === '') {
+			$out['message'] = __('Нет shop_id или secret_key.', 'mp-marked-products-receipt');
+
+			return $out;
+		}
+
+		$base = MP_Marked_Products_Receipt_Settings::is_yk_sandbox()
+			? 'https://api-preprod.yookassa.ru/v3/payments'
+			: 'https://api.yookassa.ru/v3/payments';
+		$fake_id = '00000000-0000-0000-0000-000000000001';
+		$url = $base . '/' . $fake_id;
+
+		$response = wp_remote_get($url, [
+			'timeout' => 12,
+			'headers' => [
+				'Authorization' => 'Basic ' . base64_encode($shop_id . ':' . $secret_key),
+				'Content-Type' => 'application/json',
+			],
+		]);
+
+		if (is_wp_error($response)) {
+			$out['message'] = 'WP_Error: ' . $response->get_error_message();
+
+			return $out;
+		}
+
+		$status_code = (int) wp_remote_retrieve_response_code($response);
+		$body_raw = (string) wp_remote_retrieve_body($response);
+		$out['status_code'] = $status_code;
+		$out['body_excerpt'] = strlen($body_raw) > 400 ? substr($body_raw, 0, 400) . '…' : $body_raw;
+
+		if ($status_code === 404) {
+			$out['ok'] = true;
+			$out['message'] = __('Авторизация прошла (404 для несуществующего платежа — ожидаемо).', 'mp-marked-products-receipt');
+
+			return $out;
+		}
+
+		if ($status_code === 401 || $status_code === 403) {
+			$out['message'] = __('Ошибка авторизации (проверьте shop_id и secret_key).', 'mp-marked-products-receipt');
+
+			return $out;
+		}
+
+		$out['message'] = sprintf(
+			/* translators: %d HTTP status */
+			__('Неожиданный ответ API (HTTP %d).', 'mp-marked-products-receipt'),
+			$status_code
+		);
+
+		return $out;
+	}
+
+	/**
 	 * @return string
 	 */
 	private static function generate_idempotence_key(): string {

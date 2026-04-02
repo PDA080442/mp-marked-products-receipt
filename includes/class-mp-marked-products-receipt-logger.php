@@ -56,6 +56,29 @@ final class MP_Marked_Products_Receipt_Logger {
 	}
 
 	/**
+	 * Last N lines of the current month log file (for admin UI).
+	 *
+	 * @param int $lines
+	 * @return string
+	 */
+	public static function read_log_tail(int $lines = 40): string {
+		$path = self::current_log_path();
+		if (!is_file($path) || !is_readable($path)) {
+			return __('Лог-файл не найден или недоступен.', 'mp-marked-products-receipt');
+		}
+		$content = (string) @file_get_contents($path);
+		if ($content === '') {
+			return __('Лог пуст.', 'mp-marked-products-receipt');
+		}
+		$all_lines = preg_split("/\r\n|\n|\r/", trim($content));
+		if (!is_array($all_lines) || empty($all_lines)) {
+			return __('Лог пуст.', 'mp-marked-products-receipt');
+		}
+
+		return implode("\n", array_slice($all_lines, -1 * max(1, $lines)));
+	}
+
+	/**
 	 * @param string $level
 	 * @param string $order_id
 	 * @param string $action

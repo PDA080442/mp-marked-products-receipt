@@ -1,0 +1,61 @@
+/* MP Marked Products Receipt — admin */
+.mp-mpr-wrap {
+	max-width: 1320px;
+}
+
+.mp-mpr-section {
+	margin-top: 16px;
+	background: #fff;
+	border: 1px solid #ccd0d4;
+	padding: 16px 20px;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+
+.mp-mpr-section h2 {
+	margin-top: 0;
+	padding-top: 0;
+}
+
+.mp-mpr-muted {
+	color: #646970;
+	font-size: 13px;
+	margin: 0.5em 0 0;
+}
+
+.mp-mpr-log-pre {
+	max-height: 320px;
+	overflow: auto;
+	background: #1d2327;
+	color: #f0f0f1;
+	padding: 12px;
+	font-size: 12px;
+	line-height: 1.45;
+}
+
+.mp-mpr-diagnostics .mp-mpr-api-result {
+	margin-top: 12px;
+	padding: 10px 12px;
+	border-left: 4px solid #c3c4c7;
+	background: #f6f7f7;
+}
+
+.mp-mpr-diagnostics .mp-mpr-api-result-ok {
+	border-left-color: #00a32a;
+}
+
+.mp-mpr-diagnostics .mp-mpr-api-result-fail {
+	border-left-color: #d63638;
+}
+
+.mp-mpr-ok {
+	color: #1e4620;
+}
+
+.mp-mpr-warn {
+	color: #8a2424;
+}
+
+.mp-mpr-warn-list {
+	margin: 8px 0 0 18px;
+	color: #8a2424;
+}

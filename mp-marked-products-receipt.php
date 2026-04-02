@@ -29,14 +29,59 @@ final class MP_Marked_Products_Receipt_Plugin {
 	}
 
 	private static function register_hooks(): void {
-		if (class_exists('WooCommerce')) {
-			add_action(
-				'woocommerce_order_status_completed',
-				[MP_Marked_Products_Receipt_Orchestrator::class, 'on_order_completed'],
-				20,
-				1
-			);
+		if (!class_exists('WooCommerce')) {
+			return;
 		}
+
+		add_action(
+			'woocommerce_order_status_completed',
+			[MP_Marked_Products_Receipt_Orchestrator::class, 'on_order_completed'],
+			20,
+			1
+		);
+
+		add_filter('woocommerce_order_actions', [self::class, 'register_order_actions'], 20, 1);
+		add_action('woocommerce_order_action_mp_mpr_resend_yk', [self::class, 'on_order_action_resend_yk'], 10, 1);
+		add_action('woocommerce_order_action_mp_mpr_resend_rb', [self::class, 'on_order_action_resend_rb'], 10, 1);
+	}
+
+	/**
+	 * @param array<string,string> $actions
+	 * @return array<string,string>
+	 */
+	public static function register_order_actions($actions): array {
+		if (!is_array($actions)) {
+			$actions = [];
+		}
+
+		$actions['mp_mpr_resend_yk'] = __('Отправить отдельный чек маркированных (ЮKassa)', 'mp-marked-products-receipt');
+		$actions['mp_mpr_resend_rb'] = __('Отправить отдельный чек маркированных (Robokassa)', 'mp-marked-products-receipt');
+
+		return $actions;
+	}
+
+	/**
+	 * @param WC_Order $order
+	 * @return void
+	 */
+	public static function on_order_action_resend_yk($order): void {
+		if (!$order instanceof WC_Order) {
+			return;
+		}
+
+		MP_Marked_Products_Receipt_Orchestrator::handle_order($order, 'manual_yk');
+	}
+
+	/**
+	 * @param WC_Order $order
+	 * @return void
+	 */
+	public static function on_order_action_resend_rb($order): void {
+		if (!$order instanceof WC_Order) {
+			return;
+		}
+
+		MP_Marked_Products_Receipt_Orchestrator::handle_order($order, 'manual_rb');
 	}
 
 	/**

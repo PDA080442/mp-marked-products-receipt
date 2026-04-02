@@ -21,9 +21,21 @@ final class MP_Marked_Products_Receipt_Plugin {
 
 	public static function init(): void {
 		self::load_dependencies();
+		self::register_hooks();
 
 		if (is_admin() && class_exists('MP_Marked_Products_Receipt_Admin')) {
 			MP_Marked_Products_Receipt_Admin::init();
+		}
+	}
+
+	private static function register_hooks(): void {
+		if (class_exists('WooCommerce')) {
+			add_action(
+				'woocommerce_order_status_completed',
+				[MP_Marked_Products_Receipt_Orchestrator::class, 'on_order_completed'],
+				20,
+				1
+			);
 		}
 	}
 

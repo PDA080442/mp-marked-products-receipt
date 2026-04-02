@@ -19,8 +19,6 @@ final class MP_Marked_Products_Receipt_Admin {
 	private static $settings_registered = false;
 
 	public static function init(): void {
-		load_plugin_textdomain('mp-marked-products-receipt', false, dirname(dirname(__FILE__)) . '/languages');
-
 		add_action('admin_menu', [self::class, 'register_menu']);
 		add_action('admin_init', [self::class, 'register_settings']);
 		add_action('admin_enqueue_scripts', [self::class, 'enqueue_assets']);
@@ -31,8 +29,8 @@ final class MP_Marked_Products_Receipt_Admin {
 	public static function register_menu(): void {
 		add_submenu_page(
 			'woocommerce',
-			'MP Marked Products Receipt',
-			'Marked receipts',
+			__('MP Marked Products Receipt', 'mp-marked-products-receipt'),
+			__('Marked receipts', 'mp-marked-products-receipt'),
 			'manage_woocommerce',
 			self::PAGE_SLUG,
 			[self::class, 'render_page']
@@ -1030,12 +1028,12 @@ final class MP_Marked_Products_Receipt_Admin {
 			<h2><?php echo esc_html__('Готовность', 'mp-marked-products-receipt'); ?></h2>
 			<p>
 				<strong><?php echo esc_html__('Статус:', 'mp-marked-products-receipt'); ?></strong>
-				<span class="<?php echo $readiness_ok ? 'mp-mpr-ok' : 'mp-mpr-warn'; ?>"><?php echo $readiness_ok ? 'PASS' : 'WARN'; ?></span>
+				<span class="<?php echo $readiness_ok ? 'mp-mpr-ok' : 'mp-mpr-warn'; ?>"><?php echo $readiness_ok ? esc_html__('PASS', 'mp-marked-products-receipt') : esc_html__('WARN', 'mp-marked-products-receipt'); ?></span>
 			</p>
 			<ul>
 				<?php foreach ($preflight['checks'] as $check) : ?>
 					<li>
-						<span class="<?php echo !empty($check['ok']) ? 'mp-mpr-ok' : 'mp-mpr-warn'; ?>"><?php echo !empty($check['ok']) ? 'PASS' : 'WARN'; ?></span>
+						<span class="<?php echo !empty($check['ok']) ? 'mp-mpr-ok' : 'mp-mpr-warn'; ?>"><?php echo !empty($check['ok']) ? esc_html__('PASS', 'mp-marked-products-receipt') : esc_html__('WARN', 'mp-marked-products-receipt'); ?></span>
 						— <?php echo esc_html((string) $check['label']); ?>
 					</li>
 				<?php endforeach; ?>
@@ -1053,11 +1051,11 @@ final class MP_Marked_Products_Receipt_Admin {
 					<p class="mp-mpr-warn"><?php echo esc_html__('Заказ не найден.', 'mp-marked-products-receipt'); ?></p>
 				<?php else : ?>
 					<p><strong><?php echo esc_html__('Order', 'mp-marked-products-receipt'); ?> #<?php echo esc_html((string) $inspect_result['order_id']); ?></strong></p>
-					<p><strong>resolved:</strong></p>
+					<p><strong><?php echo esc_html__('resolved', 'mp-marked-products-receipt'); ?>:</strong></p>
 					<pre class="mp-mpr-log-pre"><?php echo esc_html(wp_json_encode($inspect_result['resolved'], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT)); ?></pre>
-					<p><strong>built_preview:</strong></p>
+					<p><strong><?php echo esc_html__('built_preview', 'mp-marked-products-receipt'); ?>:</strong></p>
 					<pre class="mp-mpr-log-pre"><?php echo esc_html(wp_json_encode($inspect_result['built'], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT)); ?></pre>
-					<p><strong>meta:</strong></p>
+					<p><strong><?php echo esc_html__('meta', 'mp-marked-products-receipt'); ?>:</strong></p>
 					<pre class="mp-mpr-log-pre"><?php echo esc_html(wp_json_encode($inspect_result['meta'], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT)); ?></pre>
 				<?php endif; ?>
 			<?php endif; ?>
@@ -1106,12 +1104,12 @@ final class MP_Marked_Products_Receipt_Admin {
 			<h2><?php echo esc_html__('Готовность', 'mp-marked-products-receipt'); ?></h2>
 			<p>
 				<strong><?php echo esc_html__('Статус:', 'mp-marked-products-receipt'); ?></strong>
-				<span class="<?php echo $readiness_ok ? 'mp-mpr-ok' : 'mp-mpr-warn'; ?>"><?php echo $readiness_ok ? 'PASS' : 'WARN'; ?></span>
+				<span class="<?php echo $readiness_ok ? 'mp-mpr-ok' : 'mp-mpr-warn'; ?>"><?php echo $readiness_ok ? esc_html__('PASS', 'mp-marked-products-receipt') : esc_html__('WARN', 'mp-marked-products-receipt'); ?></span>
 			</p>
 			<ul>
 				<?php foreach ($preflight['checks'] as $check) : ?>
 					<li>
-						<span class="<?php echo !empty($check['ok']) ? 'mp-mpr-ok' : 'mp-mpr-warn'; ?>"><?php echo !empty($check['ok']) ? 'PASS' : 'WARN'; ?></span>
+						<span class="<?php echo !empty($check['ok']) ? 'mp-mpr-ok' : 'mp-mpr-warn'; ?>"><?php echo !empty($check['ok']) ? esc_html__('PASS', 'mp-marked-products-receipt') : esc_html__('WARN', 'mp-marked-products-receipt'); ?></span>
 						— <?php echo esc_html((string) $check['label']); ?>
 					</li>
 				<?php endforeach; ?>
@@ -1129,11 +1127,11 @@ final class MP_Marked_Products_Receipt_Admin {
 					<p class="mp-mpr-warn"><?php echo esc_html__('Заказ не найден.', 'mp-marked-products-receipt'); ?></p>
 				<?php else : ?>
 					<p><strong><?php echo esc_html__('Order', 'mp-marked-products-receipt'); ?> #<?php echo esc_html((string) $inspect_result['order_id']); ?></strong></p>
-					<p><strong>resolved:</strong></p>
+					<p><strong><?php echo esc_html__('resolved', 'mp-marked-products-receipt'); ?>:</strong></p>
 					<pre class="mp-mpr-log-pre"><?php echo esc_html(wp_json_encode($inspect_result['resolved'], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT)); ?></pre>
-					<p><strong>built_preview:</strong></p>
+					<p><strong><?php echo esc_html__('built_preview', 'mp-marked-products-receipt'); ?>:</strong></p>
 					<pre class="mp-mpr-log-pre"><?php echo esc_html(wp_json_encode($inspect_result['built'], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT)); ?></pre>
-					<p><strong>meta:</strong></p>
+					<p><strong><?php echo esc_html__('meta', 'mp-marked-products-receipt'); ?>:</strong></p>
 					<pre class="mp-mpr-log-pre"><?php echo esc_html(wp_json_encode($inspect_result['meta'], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT)); ?></pre>
 				<?php endif; ?>
 			<?php endif; ?>
@@ -1364,7 +1362,7 @@ final class MP_Marked_Products_Receipt_Admin {
 	public static function ajax_inspect_product(): void {
 		check_ajax_referer('mp_mpr_inspect_product', 'nonce');
 		if (!current_user_can('manage_woocommerce')) {
-			wp_send_json_error(['message' => 'Forbidden']);
+			wp_send_json_error(['message' => __('Недостаточно прав.', 'mp-marked-products-receipt')]);
 		}
 
 		$raw = isset($_POST['product_id']) ? sanitize_text_field(wp_unslash((string) $_POST['product_id'])) : '';
@@ -1374,7 +1372,7 @@ final class MP_Marked_Products_Receipt_Admin {
 		}
 
 		if (!function_exists('wc_get_product')) {
-			wp_send_json_error(['message' => 'WooCommerce not loaded']);
+			wp_send_json_error(['message' => __('WooCommerce не загружен.', 'mp-marked-products-receipt')]);
 		}
 
 		$product = wc_get_product($product_id);

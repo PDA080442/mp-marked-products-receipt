@@ -59,7 +59,11 @@ final class MP_Marked_Products_Receipt_ApiClient_YK {
 			$response = wp_remote_post($url, $args);
 
 			if (is_wp_error($response)) {
-				$result['error'] = 'WP_Error: ' . $response->get_error_message();
+				$result['error'] = sprintf(
+					/* translators: %s: WordPress error message */
+					__('WP_Error: %s', 'mp-marked-products-receipt'),
+					$response->get_error_message()
+				);
 				if ($attempt < $max_attempts) {
 					self::sleep_backoff($attempt);
 					$attempt++;
@@ -90,12 +94,16 @@ final class MP_Marked_Products_Receipt_ApiClient_YK {
 				continue;
 			}
 
-			$result['error'] = 'HTTP ' . $status_code;
+			$result['error'] = sprintf(
+				/* translators: %d: HTTP status code */
+				__('HTTP %d', 'mp-marked-products-receipt'),
+				$status_code
+			);
 
 			return $result;
 		}
 
-		$result['error'] = 'Unknown API error';
+		$result['error'] = __('Неизвестная ошибка API.', 'mp-marked-products-receipt');
 
 		return $result;
 	}
@@ -137,7 +145,11 @@ final class MP_Marked_Products_Receipt_ApiClient_YK {
 		]);
 
 		if (is_wp_error($response)) {
-			$out['message'] = 'WP_Error: ' . $response->get_error_message();
+			$out['message'] = sprintf(
+				/* translators: %s: WordPress error message */
+				__('WP_Error: %s', 'mp-marked-products-receipt'),
+				$response->get_error_message()
+			);
 
 			return $out;
 		}

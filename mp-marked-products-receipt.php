@@ -7,11 +7,25 @@
  * Requires at least: 6.0
  * Requires PHP: 7.4
  * Text Domain: mp-marked-products-receipt
+ * Domain Path: /languages
  */
 
 if (!defined('ABSPATH')) {
 	exit;
 }
+
+/**
+ * Translations (§19): load before other plugin code uses __().
+ */
+function mp_marked_products_receipt_load_textdomain(): void {
+	load_plugin_textdomain(
+		'mp-marked-products-receipt',
+		false,
+		dirname(plugin_basename(__FILE__)) . '/languages'
+	);
+}
+
+add_action('plugins_loaded', 'mp_marked_products_receipt_load_textdomain', 5);
 
 /**
  * Bootstrap: structure + fixed-order dependency loading (no Composer autoload).
@@ -108,4 +122,4 @@ final class MP_Marked_Products_Receipt_Plugin {
 	}
 }
 
-add_action('plugins_loaded', [MP_Marked_Products_Receipt_Plugin::class, 'init']);
+add_action('plugins_loaded', [MP_Marked_Products_Receipt_Plugin::class, 'init'], 10);

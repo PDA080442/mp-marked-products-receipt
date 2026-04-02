@@ -459,27 +459,27 @@ final class MP_Marked_Products_Receipt_Settings {
 		$errors = [];
 
 		if (!self::is_common_enabled()) {
-			$errors[] = 'Plugin is disabled';
+			$errors[] = __('Плагин отключён.', 'mp-marked-products-receipt');
 			return $errors;
 		}
 
 		if (!self::is_yk_enabled()) {
-			$errors[] = 'YooKassa integration is disabled';
+			$errors[] = __('Интеграция ЮKassa отключена.', 'mp-marked-products-receipt');
 			return $errors;
 		}
 
 		if (self::get_yk_shop_id() === '') {
-			$errors[] = 'Missing YooKassa shop_id (mp_mpr_yk_shop_id or MP_MPR_YK_SHOP_ID)';
+			$errors[] = __('Не задан YooKassa shop_id (mp_mpr_yk_shop_id или MP_MPR_YK_SHOP_ID).', 'mp-marked-products-receipt');
 		}
 		if (self::get_yk_secret_key() === '') {
-			$errors[] = 'Missing YooKassa secret_key (mp_mpr_yk_secret_key or MP_MPR_YK_SECRET_KEY)';
+			$errors[] = __('Не задан YooKassa secret_key (mp_mpr_yk_secret_key или MP_MPR_YK_SECRET_KEY).', 'mp-marked-products-receipt');
 		}
 
 		if (!in_array(self::get_yk_default_payment_mode(), self::allowed_payment_modes(), true)) {
-			$errors[] = 'Invalid default YooKassa payment_mode';
+			$errors[] = __('Некорректный payment_mode ЮKassa по умолчанию.', 'mp-marked-products-receipt');
 		}
 		if (!in_array(self::get_yk_default_payment_subject(), self::allowed_payment_subjects(), true)) {
-			$errors[] = 'Invalid default YooKassa payment_subject';
+			$errors[] = __('Некорректный payment_subject ЮKassa по умолчанию.', 'mp-marked-products-receipt');
 		}
 
 		return $errors;
@@ -494,27 +494,27 @@ final class MP_Marked_Products_Receipt_Settings {
 		$errors = [];
 
 		if (!self::is_common_enabled()) {
-			$errors[] = 'Plugin is disabled';
+			$errors[] = __('Плагин отключён.', 'mp-marked-products-receipt');
 			return $errors;
 		}
 
 		if (!self::is_rb_enabled()) {
-			$errors[] = 'Robokassa integration is disabled';
+			$errors[] = __('Интеграция Robokassa отключена.', 'mp-marked-products-receipt');
 			return $errors;
 		}
 
 		if (self::get_rb_login() === '') {
-			$errors[] = 'Missing Robokassa login (mp_mpr_rb_login or MP_MPR_RB_LOGIN)';
+			$errors[] = __('Не задан Robokassa login (mp_mpr_rb_login или MP_MPR_RB_LOGIN).', 'mp-marked-products-receipt');
 		}
 		if (self::get_rb_password1() === '') {
-			$errors[] = 'Missing Robokassa password1 (mp_mpr_rb_password1 or MP_MPR_RB_PASSWORD1)';
+			$errors[] = __('Не задан Robokassa password1 (mp_mpr_rb_password1 или MP_MPR_RB_PASSWORD1).', 'mp-marked-products-receipt');
 		}
 
 		if (!in_array(self::get_rb_default_payment_mode(), self::allowed_payment_modes(), true)) {
-			$errors[] = 'Invalid default Robokassa payment_mode';
+			$errors[] = __('Некорректный payment_mode Robokassa по умолчанию.', 'mp-marked-products-receipt');
 		}
 		if (!in_array(self::get_rb_default_payment_subject(), self::allowed_payment_subjects(), true)) {
-			$errors[] = 'Invalid default Robokassa payment_subject';
+			$errors[] = __('Некорректный payment_subject Robokassa по умолчанию.', 'mp-marked-products-receipt');
 		}
 
 		return $errors;
@@ -534,29 +534,29 @@ final class MP_Marked_Products_Receipt_Settings {
 
 		$source = self::get_marking_source();
 		if (!in_array($source, self::allowed_marking_sources(), true)) {
-			$errors[] = 'Invalid marking source';
+			$errors[] = __('Некорректный источник маркировки.', 'mp-marked-products-receipt');
 			return $errors;
 		}
 
 		if ($source === 'meta' && self::get_marking_meta_key() === '') {
-			$errors[] = 'Marking source is "meta" but product meta key is empty';
+			$errors[] = __('Режим «meta», но не задан meta key товара.', 'mp-marked-products-receipt');
 		}
 
 		if ($source === 'taxonomy') {
 			if (self::get_marking_taxonomy() === '') {
-				$errors[] = 'Marking source is "taxonomy" but taxonomy slug is empty';
+				$errors[] = __('Режим «taxonomy», но пустой slug таксономии.', 'mp-marked-products-receipt');
 			}
 			if (empty(self::get_marking_term_ids())) {
-				$errors[] = 'Marking source is "taxonomy" but term list is empty';
+				$errors[] = __('Режим «taxonomy», но список терминов пуст.', 'mp-marked-products-receipt');
 			}
 		}
 
 		if ($source === 'category' && empty(self::get_marking_category_ids())) {
-			$errors[] = 'Marking source is "category" but no categories selected';
+			$errors[] = __('Режим «category», но не выбраны категории.', 'mp-marked-products-receipt');
 		}
 
 		if (self::is_require_cis_in_order_item_meta() && self::get_order_item_cis_meta_key() === '') {
-			$errors[] = 'CIS required on order line but order item meta key is empty';
+			$errors[] = __('Требуется КИЗ в позиции заказа, но не задан ключ мета позиции.', 'mp-marked-products-receipt');
 		}
 
 		return $errors;

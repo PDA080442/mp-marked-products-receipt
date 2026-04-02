@@ -44,7 +44,11 @@ final class MP_Marked_Products_Receipt_ReceiptBuilder_RB {
 
 			$product = $item->get_product();
 			if (!$product) {
-				$warnings[] = 'Line item #' . (int) $item->get_id() . ': product not found';
+				$warnings[] = sprintf(
+					/* translators: %d: WooCommerce order line item ID */
+					__('Позиция заказа #%d: товар не найден.', 'mp-marked-products-receipt'),
+					(int) $item->get_id()
+				);
 				continue;
 			}
 
@@ -88,7 +92,11 @@ final class MP_Marked_Products_Receipt_ReceiptBuilder_RB {
 			}
 
 			if ($cis === '') {
-				$warnings[] = 'Missing CIS/nomenclature_code for line item #' . (int) $item->get_id();
+				$warnings[] = sprintf(
+					/* translators: %d: order line item ID */
+					__('Нет КИЗ/nomenclature_code для позиции заказа #%d.', 'mp-marked-products-receipt'),
+					(int) $item->get_id()
+				);
 				if (MP_Marked_Products_Receipt_Settings::is_rb_skip_without_cis()) {
 					$total_items_amount -= $sum;
 					continue;
@@ -101,14 +109,14 @@ final class MP_Marked_Products_Receipt_ReceiptBuilder_RB {
 		}
 
 		if (empty($items)) {
-			$warnings[] = 'No marked line items included in Robokassa receipt';
+			$warnings[] = __('В чек Robokassa не попала ни одна маркированная позиция.', 'mp-marked-products-receipt');
 		}
 
 		$total_items_amount = (float) wc_format_decimal($total_items_amount, wc_get_price_decimals());
 		$settlement_amount = (float) wc_format_decimal(max(0.0, $settlement_amount), wc_get_price_decimals());
 
 		if ($total_items_amount > 0 && $settlement_amount > $total_items_amount) {
-			$warnings[] = 'Settlement amount exceeds items total; clamped';
+			$warnings[] = __('Сумма зачёта больше суммы позиций; ограничено суммой позиций.', 'mp-marked-products-receipt');
 			$settlement_amount = $total_items_amount;
 		}
 

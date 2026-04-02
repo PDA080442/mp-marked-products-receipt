@@ -132,7 +132,7 @@ final class MP_Marked_Products_Receipt_Orchestrator {
 		}
 
 		if (trim((string) ($resolved['source_payment_id'] ?? '')) === '') {
-			$order->update_meta_data(self::META_YK_ERROR, 'Missing source_payment_id');
+			$order->update_meta_data(self::META_YK_ERROR, __('Не найден source_payment_id для ЮKassa.', 'mp-marked-products-receipt'));
 			$order->save();
 			MP_Marked_Products_Receipt_Logger::log('ERROR', $order_id, 'yk_missing_source_payment_id', [
 				'reason' => $resolved['reason'] ?? '',
@@ -147,7 +147,7 @@ final class MP_Marked_Products_Receipt_Orchestrator {
 		$items_count = isset($receipt_data['items']) && is_array($receipt_data['items']) ? count($receipt_data['items']) : 0;
 
 		if ($items_count < 1) {
-			$msg = 'Empty YooKassa receipt items';
+			$msg = __('Пустой список позиций чека ЮKassa.', 'mp-marked-products-receipt');
 			$order->update_meta_data(self::META_YK_ERROR, $msg);
 			$order->save();
 			MP_Marked_Products_Receipt_Logger::log('ERROR', $order_id, 'yk_empty_items', [
@@ -191,7 +191,7 @@ final class MP_Marked_Products_Receipt_Orchestrator {
 
 		$err = isset($api['error']) && is_string($api['error']) && $api['error'] !== ''
 			? $api['error']
-			: 'Unknown YooKassa API error';
+			: __('Неизвестная ошибка API ЮKassa.', 'mp-marked-products-receipt');
 		$order->update_meta_data(self::META_YK_ERROR, $err);
 		$order->save();
 
@@ -271,7 +271,7 @@ final class MP_Marked_Products_Receipt_Orchestrator {
 		}
 
 		if (trim((string) ($resolved['source_id'] ?? '')) === '') {
-			$order->update_meta_data(self::META_RB_ERROR, 'Missing source_id');
+			$order->update_meta_data(self::META_RB_ERROR, __('Не найден source_id для Robokassa.', 'mp-marked-products-receipt'));
 			$order->save();
 			MP_Marked_Products_Receipt_Logger::log('ERROR', $order_id, 'rb_missing_source_id', [
 				'reason' => $resolved['reason'] ?? '',
@@ -286,7 +286,7 @@ final class MP_Marked_Products_Receipt_Orchestrator {
 		$items_count = isset($receipt_data['items']) && is_array($receipt_data['items']) ? count($receipt_data['items']) : 0;
 
 		if ($items_count < 1) {
-			$msg = 'Empty Robokassa receipt items';
+			$msg = __('Пустой список позиций чека Robokassa.', 'mp-marked-products-receipt');
 			$order->update_meta_data(self::META_RB_ERROR, $msg);
 			$order->save();
 			MP_Marked_Products_Receipt_Logger::log('ERROR', $order_id, 'rb_empty_items', [
@@ -338,7 +338,7 @@ final class MP_Marked_Products_Receipt_Orchestrator {
 
 		$err = isset($api['error']) && is_string($api['error']) && $api['error'] !== ''
 			? $api['error']
-			: 'Unknown Robokassa API error';
+			: __('Неизвестная ошибка API Robokassa.', 'mp-marked-products-receipt');
 		$order->update_meta_data(self::META_RB_ERROR, $err);
 		$order->save();
 

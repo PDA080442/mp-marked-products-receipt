@@ -1,0 +1,538 @@
+# Copyright (C) 2026
+# This file is distributed under the GPL-2.0-or-later.
+msgid ""
+msgstr ""
+"Project-Id-Version: MP Marked Products Receipt 0.1.0\n"
+"Report-Msgid-Bugs-To:\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-04-02T19:30:38+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: mp-marked-products-receipt i18n helper\n"
+"X-Domain: mp-marked-products-receipt\n"
+
+#: admin/class-mp-marked-products-receipt-admin.php:447
+msgid "Access denied"
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:1056
+#: admin/class-mp-marked-products-receipt-admin.php:1132
+msgid "built_preview"
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:590
+msgid "Debug"
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:1000
+msgid "GET несуществующего платежа: 404 при успешной авторизации."
+msgstr ""
+
+#: includes/class-mp-marked-products-receipt-api-client-rb.php:98
+#: includes/class-mp-marked-products-receipt-api-client-yk.php:99
+msgid "HTTP %d"
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:627
+msgid "ID терминов (через запятую)"
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:660
+msgid "ID товара"
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:33
+msgid "Marked receipts"
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:1058
+#: admin/class-mp-marked-products-receipt-admin.php:1134
+msgid "meta"
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:607
+msgid "Meta key товара"
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:32
+#: admin/class-mp-marked-products-receipt-admin.php:503
+msgid "MP Marked Products Receipt"
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:1053
+#: admin/class-mp-marked-products-receipt-admin.php:1129
+msgid "Order"
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:1045
+#: admin/class-mp-marked-products-receipt-admin.php:1121
+msgid "Order ID"
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:1031
+#: admin/class-mp-marked-products-receipt-admin.php:1036
+#: admin/class-mp-marked-products-receipt-admin.php:1107
+#: admin/class-mp-marked-products-receipt-admin.php:1112
+msgid "PASS"
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:1017
+#: admin/class-mp-marked-products-receipt-admin.php:1093
+msgid "Preflight"
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:1054
+#: admin/class-mp-marked-products-receipt-admin.php:1130
+msgid "resolved"
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:519
+#: admin/class-mp-marked-products-receipt-admin.php:652
+#: admin/class-mp-marked-products-receipt-admin.php:844
+msgid "Robokassa"
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:1209
+msgid "Robokassa: login и password1 заполнены"
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:696
+msgid "Sandbox"
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:854
+msgid "Sandbox / тест"
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:623
+msgid "Taxonomy slug"
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:1031
+#: admin/class-mp-marked-products-receipt-admin.php:1036
+#: admin/class-mp-marked-products-receipt-admin.php:1107
+#: admin/class-mp-marked-products-receipt-admin.php:1112
+msgid "WARN"
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:1375
+msgid "WooCommerce не загружен."
+msgstr ""
+
+#: includes/class-mp-marked-products-receipt-api-client-rb.php:129
+#: includes/class-mp-marked-products-receipt-api-client-rb.php:66
+#: includes/class-mp-marked-products-receipt-api-client-yk.php:150
+#: includes/class-mp-marked-products-receipt-api-client-yk.php:64
+msgid "WP_Error: %s"
+msgstr ""
+
+#: includes/class-mp-marked-products-receipt-api-client-yk.php:164
+msgid "Авторизация прошла (404 для несуществующего платежа — ожидаемо)."
+msgstr ""
+
+#: includes/class-mp-marked-products-receipt-receipt-builder-rb.php:112
+msgid "В чек Robokassa не попала ни одна маркированная позиция."
+msgstr ""
+
+#: includes/class-mp-marked-products-receipt-receipt-builder-yk.php:120
+msgid "В чек ЮKassa не попала ни одна маркированная позиция."
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:738
+#: admin/class-mp-marked-products-receipt-admin.php:896
+msgid "Вкл"
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:689
+#: admin/class-mp-marked-products-receipt-admin.php:847
+msgid "Включить"
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:1028
+#: admin/class-mp-marked-products-receipt-admin.php:1104
+msgid "Готовность"
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:586
+#: admin/class-mp-marked-products-receipt-admin.php:636
+#: admin/class-mp-marked-products-receipt-admin.php:692
+#: admin/class-mp-marked-products-receipt-admin.php:699
+#: admin/class-mp-marked-products-receipt-admin.php:751
+#: ... +5 refs
+msgid "Да"
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:782
+#: admin/class-mp-marked-products-receipt-admin.php:940
+msgid "Добавить правило"
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:1087
+msgid "Доступен"
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:1079
+msgid "Доступность endpoint и сети (как в mp_robokassa_receipt2)."
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:1165
+#: admin/class-mp-marked-products-receipt-admin.php:1216
+msgid "Есть хотя бы одно включённое правило по категориям"
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:1051
+#: admin/class-mp-marked-products-receipt-admin.php:1127
+msgid "Заказ не найден."
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:1118
+msgid "Инспектор заказа (Robokassa)"
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:1042
+msgid "Инспектор заказа (ЮKassa)"
+msgstr ""
+
+#: includes/class-mp-marked-products-receipt-settings.php:502
+msgid "Интеграция Robokassa отключена."
+msgstr ""
+
+#: includes/class-mp-marked-products-receipt-settings.php:467
+msgid "Интеграция ЮKassa отключена."
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:597
+msgid "Источник признака маркировки"
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:1169
+#: admin/class-mp-marked-products-receipt-admin.php:1220
+msgid "Каталог логов доступен для записи"
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:740
+#: admin/class-mp-marked-products-receipt-admin.php:898
+msgid "Категории"
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:611
+msgid "Категории (product_cat)"
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:640
+msgid "Ключ мета позиции заказа (КИЗ)"
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:658
+msgid "Контрольная проверка товара"
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:1025
+#: admin/class-mp-marked-products-receipt-admin.php:1101
+msgid "Критичных предупреждений нет."
+msgstr ""
+
+#: includes/class-mp-marked-products-receipt-logger.php:71
+#: includes/class-mp-marked-products-receipt-logger.php:75
+msgid "Лог пуст."
+msgstr ""
+
+#: includes/class-mp-marked-products-receipt-logger.php:67
+msgid "Лог-файл не найден или недоступен."
+msgstr ""
+
+#: includes/class-mp-marked-products-receipt-settings.php:507
+msgid "Не задан Robokassa login (mp_mpr_rb_login или MP_MPR_RB_LOGIN)."
+msgstr ""
+
+#: includes/class-mp-marked-products-receipt-settings.php:510
+msgid "Не задан Robokassa password1 (mp_mpr_rb_password1 или MP_MPR_RB_PASSWORD1)."
+msgstr ""
+
+#: includes/class-mp-marked-products-receipt-settings.php:475
+msgid "Не задан YooKassa secret_key (mp_mpr_yk_secret_key или MP_MPR_YK_SECRET_KEY)."
+msgstr ""
+
+#: includes/class-mp-marked-products-receipt-settings.php:472
+msgid "Не задан YooKassa shop_id (mp_mpr_yk_shop_id или MP_MPR_YK_SHOP_ID)."
+msgstr ""
+
+#: includes/class-mp-marked-products-receipt-api-client-rb.php:37
+msgid "Не заданы учётные данные Robokassa."
+msgstr ""
+
+#: includes/class-mp-marked-products-receipt-orchestrator.php:274
+msgid "Не найден source_id для Robokassa."
+msgstr ""
+
+#: includes/class-mp-marked-products-receipt-orchestrator.php:135
+msgid "Не найден source_payment_id для ЮKassa."
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:440
+msgid "Не удалось выполнить запрос."
+msgstr ""
+
+#: includes/class-mp-marked-products-receipt-api-client-rb.php:44
+msgid "Не удалось сформировать подписанное тело запроса."
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:1365
+msgid "Недостаточно прав."
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:1087
+msgid "Недоступен"
+msgstr ""
+
+#: includes/class-mp-marked-products-receipt-orchestrator.php:341
+msgid "Неизвестная ошибка API Robokassa."
+msgstr ""
+
+#: includes/class-mp-marked-products-receipt-orchestrator.php:194
+msgid "Неизвестная ошибка API ЮKassa."
+msgstr ""
+
+#: includes/class-mp-marked-products-receipt-api-client-rb.php:105
+#: includes/class-mp-marked-products-receipt-api-client-yk.php:106
+msgid "Неизвестная ошибка API."
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:1371
+msgid "Некорректный ID товара."
+msgstr ""
+
+#: includes/class-mp-marked-products-receipt-settings.php:514
+msgid "Некорректный payment_mode Robokassa по умолчанию."
+msgstr ""
+
+#: includes/class-mp-marked-products-receipt-settings.php:479
+msgid "Некорректный payment_mode ЮKassa по умолчанию."
+msgstr ""
+
+#: includes/class-mp-marked-products-receipt-settings.php:517
+msgid "Некорректный payment_subject Robokassa по умолчанию."
+msgstr ""
+
+#: includes/class-mp-marked-products-receipt-settings.php:482
+msgid "Некорректный payment_subject ЮKassa по умолчанию."
+msgstr ""
+
+#: includes/class-mp-marked-products-receipt-settings.php:537
+msgid "Некорректный источник маркировки."
+msgstr ""
+
+#: includes/class-mp-marked-products-receipt-api-client-yk.php:177
+msgid "Неожиданный ответ API (HTTP %d)."
+msgstr ""
+
+#: includes/class-mp-marked-products-receipt-api-client-yk.php:128
+msgid "Нет shop_id или secret_key."
+msgstr ""
+
+#: includes/class-mp-marked-products-receipt-receipt-builder-yk.php:100
+msgid "Нет КИЗ/mark_code_info для позиции заказа #%d."
+msgstr ""
+
+#: includes/class-mp-marked-products-receipt-receipt-builder-rb.php:97
+msgid "Нет КИЗ/nomenclature_code для позиции заказа #%d."
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:1173
+#: admin/class-mp-marked-products-receipt-admin.php:1224
+msgid "Нет ошибок validate / детектора маркировки"
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:546
+msgid "Обновите страницу, чтобы перечитать файл."
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:580
+msgid "Общие настройки"
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:709
+#: admin/class-mp-marked-products-receipt-admin.php:867
+msgid "оставьте пустым, чтобы не менять"
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:504
+msgid "Отдельные чеки для маркированных товаров (ЮKassa и/или Robokassa)."
+msgstr ""
+
+#: includes/class-mp-marked-products-receipt-orchestrator.php:333
+msgid "Отдельный чек маркированных (Robokassa) отправлен вручную успешно."
+msgstr ""
+
+#: includes/class-mp-marked-products-receipt-orchestrator.php:186
+msgid "Отдельный чек маркированных (ЮKassa) отправлен вручную успешно."
+msgstr ""
+
+#: mp-marked-products-receipt.php:72
+msgid "Отправить отдельный чек маркированных (Robokassa)"
+msgstr ""
+
+#: mp-marked-products-receipt.php:71
+msgid "Отправить отдельный чек маркированных (ЮKassa)"
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:1008
+msgid "Ошибка"
+msgstr ""
+
+#: includes/class-mp-marked-products-receipt-api-client-yk.php:170
+msgid "Ошибка авторизации (проверьте shop_id и secret_key)."
+msgstr ""
+
+#: includes/class-mp-marked-products-receipt-orchestrator.php:356
+msgid "Ошибка ручной отправки чека маркированных (Robokassa): %s"
+msgstr ""
+
+#: includes/class-mp-marked-products-receipt-orchestrator.php:209
+msgid "Ошибка ручной отправки чека маркированных (ЮKassa): %s"
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:593
+msgid "Писать DEBUG в лог"
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:1154
+#: admin/class-mp-marked-products-receipt-admin.php:1205
+#: admin/class-mp-marked-products-receipt-admin.php:583
+msgid "Плагин включён"
+msgstr ""
+
+#: includes/class-mp-marked-products-receipt-settings.php:462
+#: includes/class-mp-marked-products-receipt-settings.php:497
+msgid "Плагин отключён."
+msgstr ""
+
+#: includes/class-mp-marked-products-receipt-receipt-builder-rb.php:49
+#: includes/class-mp-marked-products-receipt-receipt-builder-yk.php:49
+msgid "Позиция заказа #%d: товар не найден."
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:734
+#: admin/class-mp-marked-products-receipt-admin.php:892
+msgid "Правила по категориям"
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:662
+msgid "Проверить"
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:1083
+msgid "Проверить API Robokassa"
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:1004
+msgid "Проверить API ЮKassa"
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:1078
+msgid "Проверка API Robokassa (RoboFiscal)"
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:999
+msgid "Проверка API ЮKassa"
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:644
+msgid "Пропускать строки без КИЗ"
+msgstr ""
+
+#: includes/class-mp-marked-products-receipt-api-client-rb.php:139
+msgid "Пустой или неожиданный HTTP-статус."
+msgstr ""
+
+#: includes/class-mp-marked-products-receipt-orchestrator.php:289
+msgid "Пустой список позиций чека Robokassa."
+msgstr ""
+
+#: includes/class-mp-marked-products-receipt-orchestrator.php:150
+msgid "Пустой список позиций чека ЮKassa."
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:666
+msgid "Путь к логам:"
+msgstr ""
+
+#: includes/class-mp-marked-products-receipt-settings.php:555
+msgid "Режим «category», но не выбраны категории."
+msgstr ""
+
+#: includes/class-mp-marked-products-receipt-settings.php:542
+msgid "Режим «meta», но не задан meta key товара."
+msgstr ""
+
+#: includes/class-mp-marked-products-receipt-settings.php:547
+msgid "Режим «taxonomy», но пустой slug таксономии."
+msgstr ""
+
+#: includes/class-mp-marked-products-receipt-settings.php:550
+msgid "Режим «taxonomy», но список терминов пуст."
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:1047
+#: admin/class-mp-marked-products-receipt-admin.php:1123
+msgid "Собрать preview"
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:531
+msgid "Сохранить настройки"
+msgstr ""
+
+#: includes/class-mp-marked-products-receipt-orchestrator.php:326
+msgid "Ссылка на чек маркированных (Robokassa): %s"
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:1030
+#: admin/class-mp-marked-products-receipt-admin.php:1106
+msgid "Статус:"
+msgstr ""
+
+#: includes/class-mp-marked-products-receipt-receipt-builder-rb.php:119
+#: includes/class-mp-marked-products-receipt-receipt-builder-yk.php:127
+msgid "Сумма зачёта больше суммы позиций; ограничено суммой позиций."
+msgstr ""
+
+#: includes/class-mp-marked-products-receipt-api-client-rb.php:138
+msgid "Точка доступна (тело запроса невалидно для API — это нормально для проверки сети)."
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:633
+msgid "Требовать КИЗ в позиции заказа"
+msgstr ""
+
+#: includes/class-mp-marked-products-receipt-settings.php:559
+msgid "Требуется КИЗ в позиции заказа, но не задан ключ мета позиции."
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:777
+#: admin/class-mp-marked-products-receipt-admin.php:809
+#: admin/class-mp-marked-products-receipt-admin.php:935
+#: admin/class-mp-marked-products-receipt-admin.php:967
+msgid "Удалить"
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:1008
+msgid "Успех"
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:544
+msgid "Хвост лога"
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:516
+#: admin/class-mp-marked-products-receipt-admin.php:648
+#: admin/class-mp-marked-products-receipt-admin.php:686
+msgid "ЮKassa"
+msgstr ""
+
+#: admin/class-mp-marked-products-receipt-admin.php:1158
+msgid "ЮKassa: учётные данные заполнены"
+msgstr ""
+

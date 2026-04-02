@@ -34,14 +34,14 @@ final class MP_Marked_Products_Receipt_ApiClient_RB {
 		];
 
 		if ($credentials['login'] === '' || $credentials['password1'] === '') {
-			$result['error'] = 'Missing Robokassa credentials';
+			$result['error'] = __('Не заданы учётные данные Robokassa.', 'mp-marked-products-receipt');
 
 			return $result;
 		}
 
 		$payload = self::build_attach_payload($fields, $credentials['password1']);
 		if ($payload === '') {
-			$result['error'] = 'Failed to build signed payload';
+			$result['error'] = __('Не удалось сформировать подписанное тело запроса.', 'mp-marked-products-receipt');
 
 			return $result;
 		}
@@ -61,7 +61,11 @@ final class MP_Marked_Products_Receipt_ApiClient_RB {
 			$response = wp_remote_post($url, $args);
 
 			if (is_wp_error($response)) {
-				$result['error'] = 'WP_Error: ' . $response->get_error_message();
+				$result['error'] = sprintf(
+					/* translators: %s: WordPress error message */
+					__('WP_Error: %s', 'mp-marked-products-receipt'),
+					$response->get_error_message()
+				);
 				if ($attempt < $max_attempts) {
 					self::sleep_backoff($attempt);
 					continue;
@@ -89,12 +93,16 @@ final class MP_Marked_Products_Receipt_ApiClient_RB {
 				continue;
 			}
 
-			$result['error'] = 'HTTP ' . $status_code;
+			$result['error'] = sprintf(
+				/* translators: %d: HTTP status code */
+				__('HTTP %d', 'mp-marked-products-receipt'),
+				$status_code
+			);
 
 			return $result;
 		}
 
-		$result['error'] = 'Unknown API failure';
+		$result['error'] = __('Неизвестная ошибка API.', 'mp-marked-products-receipt');
 
 		return $result;
 	}
@@ -116,7 +124,11 @@ final class MP_Marked_Products_Receipt_ApiClient_RB {
 			return [
 				'ok' => false,
 				'status_code' => 0,
-				'message' => 'WP_Error: ' . $response->get_error_message(),
+				'message' => sprintf(
+					/* translators: %s: WordPress error message */
+					__('WP_Error: %s', 'mp-marked-products-receipt'),
+					$response->get_error_message()
+				),
 			];
 		}
 

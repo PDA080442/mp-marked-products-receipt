@@ -42,6 +42,9 @@ final class MP_Marked_Products_Receipt_Settings {
 	public const OPTION_REQUIRE_CIS_ORDER_ITEM = 'mp_mpr_require_cis_in_order_item_meta';
 	public const OPTION_ORDER_ITEM_CIS_META_KEY = 'mp_mpr_order_item_cis_meta_key';
 
+	/** §22: если включено, `uninstall.php` удаляет каталог логов в uploads. */
+	public const OPTION_DELETE_LOGS_ON_UNINSTALL = 'mp_mpr_delete_logs_on_uninstall';
+
 	/**
 	 * @return bool
 	 */
@@ -62,6 +65,15 @@ final class MP_Marked_Products_Receipt_Settings {
 		}
 
 		return (bool) get_option(self::OPTION_DEBUG, false);
+	}
+
+	/**
+	 * §22: удалять файлы логов при удалении плагина (см. `uninstall.php`).
+	 *
+	 * @return bool
+	 */
+	public static function should_delete_logs_on_uninstall(): bool {
+		return (bool) get_option(self::OPTION_DELETE_LOGS_ON_UNINSTALL, false);
 	}
 
 	/**

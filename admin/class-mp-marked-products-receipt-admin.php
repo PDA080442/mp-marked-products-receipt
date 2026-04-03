@@ -57,6 +57,11 @@ final class MP_Marked_Products_Receipt_Admin {
 			'sanitize_callback' => [self::class, 'sanitize_checkbox'],
 			'default' => false,
 		]);
+		$reg(MP_Marked_Products_Receipt_Settings::OPTION_DELETE_LOGS_ON_UNINSTALL, [
+			'type' => 'boolean',
+			'sanitize_callback' => [self::class, 'sanitize_checkbox'],
+			'default' => false,
+		]);
 
 		$reg(MP_Marked_Products_Receipt_Settings::OPTION_MARKING_SOURCE, [
 			'type' => 'string',
@@ -555,6 +560,7 @@ final class MP_Marked_Products_Receipt_Admin {
 	private static function render_common_section(): void {
 		$enabled = MP_Marked_Products_Receipt_Settings::is_common_enabled();
 		$debug = MP_Marked_Products_Receipt_Settings::is_debug();
+		$delete_logs_uninstall = MP_Marked_Products_Receipt_Settings::should_delete_logs_on_uninstall();
 		$src = MP_Marked_Products_Receipt_Settings::get_marking_source();
 		$meta_key = MP_Marked_Products_Receipt_Settings::get_marking_meta_key();
 		$taxonomy = MP_Marked_Products_Receipt_Settings::get_marking_taxonomy();
@@ -591,6 +597,14 @@ final class MP_Marked_Products_Receipt_Admin {
 					<td>
 						<input type="hidden" name="<?php echo esc_attr($o::OPTION_DEBUG); ?>" value="0" />
 						<label><input type="checkbox" name="<?php echo esc_attr($o::OPTION_DEBUG); ?>" value="1" <?php checked($debug); ?> /> <?php echo esc_html__('Писать DEBUG в лог', 'mp-marked-products-receipt'); ?></label>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row"><?php echo esc_html__('Удаление логов', 'mp-marked-products-receipt'); ?></th>
+					<td>
+						<input type="hidden" name="<?php echo esc_attr($o::OPTION_DELETE_LOGS_ON_UNINSTALL); ?>" value="0" />
+						<label><input type="checkbox" name="<?php echo esc_attr($o::OPTION_DELETE_LOGS_ON_UNINSTALL); ?>" value="1" <?php checked($delete_logs_uninstall); ?> /> <?php echo esc_html__('При удалении плагина удалять файлы логов из каталога uploads', 'mp-marked-products-receipt'); ?></label>
+						<p class="description"><?php echo esc_html__('Мета заказов и данные WooCommerce не затрагиваются.', 'mp-marked-products-receipt'); ?></p>
 					</td>
 				</tr>
 				<tr>

@@ -159,13 +159,51 @@ final class MP_Marked_Products_Receipt_Orchestrator {
 			return;
 		}
 
-		$items_count = isset($receipt_data['items']) && is_array($receipt_data['items']) ? count($receipt_data['items']) : 0;
+		$yk_payload = [
+			'items' => $receipt_data['items'],
+			'settlements' => $receipt_data['settlements'],
+		];
+
+		/**
+		 * §21: полный фрагмент чека ЮKassa (items + settlements) перед POST `/v3/receipts`.
+		 *
+		 * @param array $payload Keys: `items`, `settlements`.
+		 * @param WC_Order $order
+		 * @param array $resolved Результат `OrderLinks_YK::resolve_for_order`.
+		 * @param bool $manual Ручная отправка из заказа.
+		 */
+		$yk_payload = apply_filters('mp_mpr_yk_receipt_payload', $yk_payload, $order, $resolved, $manual);
+		if (!is_array($yk_payload)) {
+			$yk_payload = [
+				'items' => $receipt_data['items'],
+				'settlements' => $receipt_data['settlements'],
+			];
+		}
+
+		$yk_items = isset($yk_payload['items']) && is_array($yk_payload['items']) ? $yk_payload['items'] : [];
+		$yk_settlements = isset($yk_payload['settlements']) && is_array($yk_payload['settlements'])
+			? $yk_payload['settlements']
+			: (isset($receipt_data['settlements']) && is_array($receipt_data['settlements']) ? $receipt_data['settlements'] : []);
+
+		$yk_check = [
+			'items' => $yk_items,
+			'total_items_amount' => self::sum_yk_items_amounts($yk_items),
+		];
+		if (self::receipt_has_no_payable_amount($yk_check)) {
+			MP_Marked_Products_Receipt_Logger::log('DEBUG', $order_id, 'yk_skip_zero_marked_after_payload_filter', [
+				'manual' => $manual,
+			]);
+
+			return;
+		}
+
+		$items_count = count($yk_items);
 
 		$api = MP_Marked_Products_Receipt_ApiClient_YK::send_receipt(
 			(string) $resolved['source_payment_id'],
 			[
-				'items' => $receipt_data['items'],
-				'settlements' => $receipt_data['settlements'],
+				'items' => $yk_items,
+				'settlements' => $yk_settlements,
 			]
 		);
 
@@ -301,9 +339,37 @@ final class MP_Marked_Products_Receipt_Orchestrator {
 			return;
 		}
 
-		$items_count = isset($receipt_data['items']) && is_array($receipt_data['items']) ? count($receipt_data['items']) : 0;
-
 		$fields = self::build_rb_api_fields($order, $resolved, $receipt_data);
+
+		/**
+		 * §21: полное тело RoboFiscal Attach (MerchantLogin, InvoiceID, SourceInvoiceId, OutSum, Receipt) перед подписью и POST.
+		 *
+		 * @param array $fields
+		 * @param WC_Order $order
+		 * @param array $resolved Результат `OrderLinks_RB::resolve_for_order`.
+		 * @param bool $manual Ручная отправка из заказа.
+		 */
+		$fields = apply_filters('mp_mpr_rb_receipt_payload', $fields, $order, $resolved, $manual);
+		if (!is_array($fields)) {
+			$fields = self::build_rb_api_fields($order, $resolved, $receipt_data);
+		}
+
+		$rb_receipt = isset($fields['Receipt']) && is_array($fields['Receipt']) ? $fields['Receipt'] : [];
+		$rb_items = isset($rb_receipt['items']) && is_array($rb_receipt['items']) ? $rb_receipt['items'] : [];
+		$rb_check = [
+			'items' => $rb_items,
+			'total_items_amount' => self::sum_rb_items_amounts($rb_items),
+		];
+		if (self::receipt_has_no_payable_amount($rb_check)) {
+			MP_Marked_Products_Receipt_Logger::log('DEBUG', $order_id, 'rb_skip_zero_marked_after_payload_filter', [
+				'manual' => $manual,
+			]);
+
+			return;
+		}
+
+		$items_count = count($rb_items);
+
 		$api = MP_Marked_Products_Receipt_ApiClient_RB::send_second_receipt($fields, $order_id);
 
 		$order->update_meta_data(self::META_RB_REQUEST_ID, (string) ($api['request_id'] ?? ''));
@@ -445,5 +511,50 @@ final class MP_Marked_Products_Receipt_Orchestrator {
 		}
 
 		return $total <= 0.0;
+	}
+
+	/**
+	 * Сумма позиций чека ЮKassa по полю `amount.value` (после §21 payload filter).
+	 *
+	 * @param array<int,mixed> $items
+	 * @return float
+	 */
+	private static function sum_yk_items_amounts(array $items): float {
+		$total = 0.0;
+		foreach ($items as $row) {
+			if (!is_array($row)) {
+				continue;
+			}
+			$amount = isset($row['amount']) && is_array($row['amount']) ? $row['amount'] : [];
+			$val = $amount['value'] ?? null;
+			if ($val === null || $val === '') {
+				continue;
+			}
+			$total += (float) wc_format_decimal((string) $val, wc_get_price_decimals());
+		}
+
+		return (float) wc_format_decimal($total, wc_get_price_decimals());
+	}
+
+	/**
+	 * Сумма позиций чека Robokassa по полю `sum` (после §21 payload filter).
+	 *
+	 * @param array<int,mixed> $items
+	 * @return float
+	 */
+	private static function sum_rb_items_amounts(array $items): float {
+		$total = 0.0;
+		foreach ($items as $row) {
+			if (!is_array($row)) {
+				continue;
+			}
+			$sum = $row['sum'] ?? null;
+			if ($sum === null || $sum === '') {
+				continue;
+			}
+			$total += (float) wc_format_decimal((string) $sum, wc_get_price_decimals());
+		}
+
+		return (float) wc_format_decimal($total, wc_get_price_decimals());
 	}
 }

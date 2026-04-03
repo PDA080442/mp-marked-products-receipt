@@ -88,6 +88,7 @@ final class MP_Marked_Products_Receipt_ApiClient_RB {
 				return $result;
 			}
 
+			// §32: 4xx не повторяем — остаётся мета ошибки заказа, повтор вручную после исправления.
 			if ($status_code >= 500 && $status_code <= 599 && $attempt < $max_attempts) {
 				self::sleep_backoff($attempt);
 				continue;

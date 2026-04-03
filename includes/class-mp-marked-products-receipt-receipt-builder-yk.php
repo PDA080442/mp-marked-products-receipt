@@ -109,6 +109,19 @@ final class MP_Marked_Products_Receipt_ReceiptBuilder_YK {
 					continue;
 				}
 			} else {
+				if (
+					is_array($payload)
+					&& !empty($payload['cis_list'])
+					&& is_array($payload['cis_list'])
+					&& count($payload['cis_list']) > 1
+				) {
+					$warnings[] = sprintf(
+						/* translators: 1: order line item ID, 2: total CIS values in meta */
+						__('Позиция заказа #%1$d: в meta несколько КИЗ (v1 в чеке только первый; всего значений: %2$d).', 'mp-marked-products-receipt'),
+						(int) $item->get_id(),
+						count($payload['cis_list'])
+					);
+				}
 				// Tag 1163 — mandatory for marked goods (FFD 1.2).
 				$row['mark_code_info'] = $cis;
 				// Tag 2108 — unit of measure; required for FFD 1.2 receipts.

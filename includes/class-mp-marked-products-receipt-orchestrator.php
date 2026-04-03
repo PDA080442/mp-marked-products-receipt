@@ -207,6 +207,7 @@ final class MP_Marked_Products_Receipt_Orchestrator {
 			]
 		);
 
+		// §32: ключ последней попытки храним и при ошибке (разбор инцидентов / идемпотентность на стороне YooKassa).
 		$order->update_meta_data(self::META_YK_IDEMPOTENCE, (string) ($api['idempotence_key'] ?? ''));
 
 		if (!empty($api['ok'])) {
@@ -242,6 +243,15 @@ final class MP_Marked_Products_Receipt_Orchestrator {
 			'response_body' => $api['response_body'] ?? null,
 			'manual' => $manual,
 		]);
+
+		// §32: при 4xx автоповторов нет (хук completed не дергается повторно сам по себе; клиент тоже не ретраит 4xx).
+		$sc = (int) ($api['status_code'] ?? 0);
+		if (!$manual && $sc >= 400 && $sc <= 499) {
+			MP_Marked_Products_Receipt_Logger::log('DEBUG', $order_id, 'yk_4xx_expect_manual_fix', [
+				'status_code' => $sc,
+				'idempotence_key' => (string) ($api['idempotence_key'] ?? ''),
+			]);
+		}
 
 		if ($manual) {
 			$order->add_order_note(
@@ -372,6 +382,7 @@ final class MP_Marked_Products_Receipt_Orchestrator {
 
 		$api = MP_Marked_Products_Receipt_ApiClient_RB::send_second_receipt($fields, $order_id);
 
+		// §32: X-Request-ID последней попытки — и при ошибке (как след для поддержки).
 		$order->update_meta_data(self::META_RB_REQUEST_ID, (string) ($api['request_id'] ?? ''));
 
 		if (!empty($api['ok'])) {
@@ -420,6 +431,14 @@ final class MP_Marked_Products_Receipt_Orchestrator {
 			'response' => $api['response'] ?? null,
 			'manual' => $manual,
 		]);
+
+		$sc_rb = (int) ($api['status_code'] ?? 0);
+		if (!$manual && $sc_rb >= 400 && $sc_rb <= 499) {
+			MP_Marked_Products_Receipt_Logger::log('DEBUG', $order_id, 'rb_4xx_expect_manual_fix', [
+				'status_code' => $sc_rb,
+				'request_id' => (string) ($api['request_id'] ?? ''),
+			]);
+		}
 
 		if ($manual) {
 			$order->add_order_note(

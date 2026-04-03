@@ -74,6 +74,9 @@ final class MP_Marked_Products_Receipt_ProductMarker {
 	/**
 	 * Raw marking data for fiscal APIs (YooKassa / Robokassa). Extend in receipt builders.
 	 *
+	 * §31: КИЗ читается только через `$item->get_meta( $configured_key, true )` (как кладут плагины при оформлении).
+	 * v1: одна строка заказа = один КИЗ в чеке — в `cis` всегда первое значение; полный список в `cis_list` (для warnings).
+	 *
 	 * Typical keys: `cis` (string), `cis_list` (string[]), `raw` (mixed).
 	 *
 	 * @param WC_Order_Item_Product $item

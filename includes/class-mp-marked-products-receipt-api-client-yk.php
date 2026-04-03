@@ -88,6 +88,7 @@ final class MP_Marked_Products_Receipt_ApiClient_YK {
 				return $result;
 			}
 
+			// §32: 4xx не повторяем — исправление настройки/данных и ручной ресенд из заказа.
 			if ($status_code >= 500 && $status_code <= 599 && $attempt < $max_attempts) {
 				self::sleep_backoff($attempt);
 				$attempt++;

@@ -65,6 +65,20 @@ final class MP_Marked_Products_Receipt_Settings {
 	}
 
 	/**
+	 * Фискальные чеки в этом плагине рассчитаны на RUB (§20): иная валюта — отправка запрещена.
+	 *
+	 * @param WC_Order $order
+	 * @return bool
+	 */
+	public static function is_order_currency_allowed_for_fiscal($order): bool {
+		if (!$order instanceof WC_Order) {
+			return false;
+		}
+
+		return strtoupper((string) $order->get_currency()) === 'RUB';
+	}
+
+	/**
 	 * @return bool
 	 */
 	public static function is_yk_enabled(): bool {

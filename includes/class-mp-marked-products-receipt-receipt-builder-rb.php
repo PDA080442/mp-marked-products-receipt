@@ -6,6 +6,8 @@ if (!defined('ABSPATH')) {
 /**
  * Builds RoboFiscal / Robokassa receipt items for **marked** line items only.
  *
+ * Суммы: `WC_Order_Item_Product::get_total()` после скидок на строку (§20). Доставка не включается (v1; §20).
+ *
  * Base shape matches `MP_Robokassa_Receipt2_ReceiptBuilder` (name, quantity, cost, sum, payment_method, payment_object, tax).
  * Marking: per project notes, marking / КИЗ is passed as item `nomenclature_code` (see `Robokassa/kkm-fiscal-receipts-by-product-type.md`).
  * If your RoboFiscal schema uses another key, adjust via `mp_mpr_rb_items`.
@@ -61,6 +63,7 @@ final class MP_Marked_Products_Receipt_ReceiptBuilder_RB {
 				continue;
 			}
 
+			// line_total — итог строки после скидок (§20).
 			$line_total = (float) $item->get_total();
 			if ($line_total <= 0) {
 				continue;

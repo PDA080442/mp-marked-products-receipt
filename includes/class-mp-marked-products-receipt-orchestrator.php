@@ -112,6 +112,10 @@ final class MP_Marked_Products_Receipt_Orchestrator {
 			return;
 		}
 
+		if (self::bail_if_order_currency_not_rub($order, 'yk', $manual)) {
+			return;
+		}
+
 		$split = MP_Marked_Products_Receipt_ProductMarker::split_order_line_items($order);
 		if (empty($split['marked'])) {
 			MP_Marked_Products_Receipt_Logger::log('DEBUG', $order_id, 'yk_skip_no_marked_items', [
@@ -144,19 +148,18 @@ final class MP_Marked_Products_Receipt_Orchestrator {
 
 		$settlement = (float) ($resolved['settlement_amount'] ?? 0.0);
 		$receipt_data = MP_Marked_Products_Receipt_ReceiptBuilder_YK::build($order, $settlement, []);
-		$items_count = isset($receipt_data['items']) && is_array($receipt_data['items']) ? count($receipt_data['items']) : 0;
 
-		if ($items_count < 1) {
-			$msg = __('Пустой список позиций чека ЮKassa.', 'mp-marked-products-receipt');
-			$order->update_meta_data(self::META_YK_ERROR, $msg);
-			$order->save();
-			MP_Marked_Products_Receipt_Logger::log('ERROR', $order_id, 'yk_empty_items', [
+		if (self::receipt_has_no_payable_amount($receipt_data)) {
+			MP_Marked_Products_Receipt_Logger::log('DEBUG', $order_id, 'yk_skip_zero_marked_after_filter', [
+				'total_items_amount' => isset($receipt_data['total_items_amount']) ? (float) $receipt_data['total_items_amount'] : 0.0,
 				'warnings' => $receipt_data['warnings'] ?? [],
 				'manual' => $manual,
 			]);
 
 			return;
 		}
+
+		$items_count = isset($receipt_data['items']) && is_array($receipt_data['items']) ? count($receipt_data['items']) : 0;
 
 		$api = MP_Marked_Products_Receipt_ApiClient_YK::send_receipt(
 			(string) $resolved['source_payment_id'],
@@ -251,6 +254,10 @@ final class MP_Marked_Products_Receipt_Orchestrator {
 			return;
 		}
 
+		if (self::bail_if_order_currency_not_rub($order, 'rb', $manual)) {
+			return;
+		}
+
 		$split = MP_Marked_Products_Receipt_ProductMarker::split_order_line_items($order);
 		if (empty($split['marked'])) {
 			MP_Marked_Products_Receipt_Logger::log('DEBUG', $order_id, 'rb_skip_no_marked_items', [
@@ -283,19 +290,18 @@ final class MP_Marked_Products_Receipt_Orchestrator {
 
 		$settlement = (float) ($resolved['settlement_amount'] ?? 0.0);
 		$receipt_data = MP_Marked_Products_Receipt_ReceiptBuilder_RB::build($order, $settlement, []);
-		$items_count = isset($receipt_data['items']) && is_array($receipt_data['items']) ? count($receipt_data['items']) : 0;
 
-		if ($items_count < 1) {
-			$msg = __('Пустой список позиций чека Robokassa.', 'mp-marked-products-receipt');
-			$order->update_meta_data(self::META_RB_ERROR, $msg);
-			$order->save();
-			MP_Marked_Products_Receipt_Logger::log('ERROR', $order_id, 'rb_empty_items', [
+		if (self::receipt_has_no_payable_amount($receipt_data)) {
+			MP_Marked_Products_Receipt_Logger::log('DEBUG', $order_id, 'rb_skip_zero_marked_after_filter', [
+				'total_items_amount' => isset($receipt_data['total_items_amount']) ? (float) $receipt_data['total_items_amount'] : 0.0,
 				'warnings' => $receipt_data['warnings'] ?? [],
 				'manual' => $manual,
 			]);
 
 			return;
 		}
+
+		$items_count = isset($receipt_data['items']) && is_array($receipt_data['items']) ? count($receipt_data['items']) : 0;
 
 		$fields = self::build_rb_api_fields($order, $resolved, $receipt_data);
 		$api = MP_Marked_Products_Receipt_ApiClient_RB::send_second_receipt($fields, $order_id);
@@ -382,5 +388,62 @@ final class MP_Marked_Products_Receipt_Orchestrator {
 				'settlements' => isset($receipt_data['settlements']) && is_array($receipt_data['settlements']) ? $receipt_data['settlements'] : [],
 			],
 		];
+	}
+
+	/**
+	 * §20: только RUB; иначе мета ошибки + ERROR в лог, без вызова API.
+	 *
+	 * @param WC_Order $order
+	 * @param string $provider yk|rb
+	 * @param bool $manual
+	 * @return bool true = остановить обработку
+	 */
+	private static function bail_if_order_currency_not_rub(WC_Order $order, string $provider, bool $manual): bool {
+		if (MP_Marked_Products_Receipt_Settings::is_order_currency_allowed_for_fiscal($order)) {
+			return false;
+		}
+
+		$order_id = (int) $order->get_id();
+		$cur = $order->get_currency();
+		$msg = sprintf(
+			/* translators: %s: order currency code (e.g. USD) */
+			__('Валюта заказа (%s) не RUB; отправка чека маркированных невозможна.', 'mp-marked-products-receipt'),
+			$cur
+		);
+
+		if ($provider === 'yk') {
+			$order->update_meta_data(self::META_YK_ERROR, $msg);
+			MP_Marked_Products_Receipt_Logger::log('ERROR', $order_id, 'yk_skip_non_rub_currency', [
+				'currency' => $cur,
+				'manual' => $manual,
+			]);
+		} else {
+			$order->update_meta_data(self::META_RB_ERROR, $msg);
+			MP_Marked_Products_Receipt_Logger::log('ERROR', $order_id, 'rb_skip_non_rub_currency', [
+				'currency' => $cur,
+				'manual' => $manual,
+			]);
+		}
+
+		$order->save();
+
+		return true;
+	}
+
+	/**
+	 * §20: после фильтров/КИЗ нет ни одной оплачиваемой позиции или сумма 0 — не вызывать API (DEBUG).
+	 *
+	 * @param array<string,mixed> $receipt_data
+	 * @return bool
+	 */
+	private static function receipt_has_no_payable_amount(array $receipt_data): bool {
+		$items = isset($receipt_data['items']) && is_array($receipt_data['items']) ? $receipt_data['items'] : [];
+		$total = isset($receipt_data['total_items_amount']) ? (float) $receipt_data['total_items_amount'] : 0.0;
+
+		if (empty($items)) {
+			return true;
+		}
+
+		return $total <= 0.0;
 	}
 }

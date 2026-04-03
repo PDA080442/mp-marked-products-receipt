@@ -4,14 +4,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MP Marked Products Receipt 0.1.0\n"
 "Report-Msgid-Bugs-To:\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-04-02T19:30:38+00:00\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: mp-marked-products-receipt i18n helper\n"
+"POT-Creation-Date: 2026-04-03T02:19:23+00:00\n"
 "X-Domain: mp-marked-products-receipt\n"
 
 #: admin/class-mp-marked-products-receipt-admin.php:447
@@ -133,12 +128,16 @@ msgstr ""
 msgid "Авторизация прошла (404 для несуществующего платежа — ожидаемо)."
 msgstr ""
 
-#: includes/class-mp-marked-products-receipt-receipt-builder-rb.php:112
+#: includes/class-mp-marked-products-receipt-receipt-builder-rb.php:115
 msgid "В чек Robokassa не попала ни одна маркированная позиция."
 msgstr ""
 
-#: includes/class-mp-marked-products-receipt-receipt-builder-yk.php:120
+#: includes/class-mp-marked-products-receipt-receipt-builder-yk.php:124
 msgid "В чек ЮKassa не попала ни одна маркированная позиция."
+msgstr ""
+
+#: includes/class-mp-marked-products-receipt-orchestrator.php:410
+msgid "Валюта заказа (%s) не RUB; отправка чека маркированных невозможна."
 msgstr ""
 
 #: admin/class-mp-marked-products-receipt-admin.php:738
@@ -161,7 +160,9 @@ msgstr ""
 #: admin/class-mp-marked-products-receipt-admin.php:692
 #: admin/class-mp-marked-products-receipt-admin.php:699
 #: admin/class-mp-marked-products-receipt-admin.php:751
-#: ... +5 refs
+#: admin/class-mp-marked-products-receipt-admin.php:804
+#: admin/class-mp-marked-products-receipt-admin.php:850
+#: admin/class-mp-marked-products-receipt-admin.php:857
 msgid "Да"
 msgstr ""
 
@@ -196,11 +197,11 @@ msgstr ""
 msgid "Инспектор заказа (ЮKassa)"
 msgstr ""
 
-#: includes/class-mp-marked-products-receipt-settings.php:502
+#: includes/class-mp-marked-products-receipt-settings.php:516
 msgid "Интеграция Robokassa отключена."
 msgstr ""
 
-#: includes/class-mp-marked-products-receipt-settings.php:467
+#: includes/class-mp-marked-products-receipt-settings.php:481
 msgid "Интеграция ЮKassa отключена."
 msgstr ""
 
@@ -244,19 +245,19 @@ msgstr ""
 msgid "Лог-файл не найден или недоступен."
 msgstr ""
 
-#: includes/class-mp-marked-products-receipt-settings.php:507
+#: includes/class-mp-marked-products-receipt-settings.php:521
 msgid "Не задан Robokassa login (mp_mpr_rb_login или MP_MPR_RB_LOGIN)."
 msgstr ""
 
-#: includes/class-mp-marked-products-receipt-settings.php:510
+#: includes/class-mp-marked-products-receipt-settings.php:524
 msgid "Не задан Robokassa password1 (mp_mpr_rb_password1 или MP_MPR_RB_PASSWORD1)."
 msgstr ""
 
-#: includes/class-mp-marked-products-receipt-settings.php:475
+#: includes/class-mp-marked-products-receipt-settings.php:489
 msgid "Не задан YooKassa secret_key (mp_mpr_yk_secret_key или MP_MPR_YK_SECRET_KEY)."
 msgstr ""
 
-#: includes/class-mp-marked-products-receipt-settings.php:472
+#: includes/class-mp-marked-products-receipt-settings.php:486
 msgid "Не задан YooKassa shop_id (mp_mpr_yk_shop_id или MP_MPR_YK_SHOP_ID)."
 msgstr ""
 
@@ -264,11 +265,11 @@ msgstr ""
 msgid "Не заданы учётные данные Robokassa."
 msgstr ""
 
-#: includes/class-mp-marked-products-receipt-orchestrator.php:274
+#: includes/class-mp-marked-products-receipt-orchestrator.php:281
 msgid "Не найден source_id для Robokassa."
 msgstr ""
 
-#: includes/class-mp-marked-products-receipt-orchestrator.php:135
+#: includes/class-mp-marked-products-receipt-orchestrator.php:139
 msgid "Не найден source_payment_id для ЮKassa."
 msgstr ""
 
@@ -288,11 +289,11 @@ msgstr ""
 msgid "Недоступен"
 msgstr ""
 
-#: includes/class-mp-marked-products-receipt-orchestrator.php:341
+#: includes/class-mp-marked-products-receipt-orchestrator.php:347
 msgid "Неизвестная ошибка API Robokassa."
 msgstr ""
 
-#: includes/class-mp-marked-products-receipt-orchestrator.php:194
+#: includes/class-mp-marked-products-receipt-orchestrator.php:197
 msgid "Неизвестная ошибка API ЮKassa."
 msgstr ""
 
@@ -305,23 +306,23 @@ msgstr ""
 msgid "Некорректный ID товара."
 msgstr ""
 
-#: includes/class-mp-marked-products-receipt-settings.php:514
+#: includes/class-mp-marked-products-receipt-settings.php:528
 msgid "Некорректный payment_mode Robokassa по умолчанию."
 msgstr ""
 
-#: includes/class-mp-marked-products-receipt-settings.php:479
+#: includes/class-mp-marked-products-receipt-settings.php:493
 msgid "Некорректный payment_mode ЮKassa по умолчанию."
 msgstr ""
 
-#: includes/class-mp-marked-products-receipt-settings.php:517
+#: includes/class-mp-marked-products-receipt-settings.php:531
 msgid "Некорректный payment_subject Robokassa по умолчанию."
 msgstr ""
 
-#: includes/class-mp-marked-products-receipt-settings.php:482
+#: includes/class-mp-marked-products-receipt-settings.php:496
 msgid "Некорректный payment_subject ЮKassa по умолчанию."
 msgstr ""
 
-#: includes/class-mp-marked-products-receipt-settings.php:537
+#: includes/class-mp-marked-products-receipt-settings.php:551
 msgid "Некорректный источник маркировки."
 msgstr ""
 
@@ -333,11 +334,11 @@ msgstr ""
 msgid "Нет shop_id или secret_key."
 msgstr ""
 
-#: includes/class-mp-marked-products-receipt-receipt-builder-yk.php:100
+#: includes/class-mp-marked-products-receipt-receipt-builder-yk.php:104
 msgid "Нет КИЗ/mark_code_info для позиции заказа #%d."
 msgstr ""
 
-#: includes/class-mp-marked-products-receipt-receipt-builder-rb.php:97
+#: includes/class-mp-marked-products-receipt-receipt-builder-rb.php:100
 msgid "Нет КИЗ/nomenclature_code для позиции заказа #%d."
 msgstr ""
 
@@ -363,11 +364,11 @@ msgstr ""
 msgid "Отдельные чеки для маркированных товаров (ЮKassa и/или Robokassa)."
 msgstr ""
 
-#: includes/class-mp-marked-products-receipt-orchestrator.php:333
+#: includes/class-mp-marked-products-receipt-orchestrator.php:339
 msgid "Отдельный чек маркированных (Robokassa) отправлен вручную успешно."
 msgstr ""
 
-#: includes/class-mp-marked-products-receipt-orchestrator.php:186
+#: includes/class-mp-marked-products-receipt-orchestrator.php:189
 msgid "Отдельный чек маркированных (ЮKassa) отправлен вручную успешно."
 msgstr ""
 
@@ -387,11 +388,11 @@ msgstr ""
 msgid "Ошибка авторизации (проверьте shop_id и secret_key)."
 msgstr ""
 
-#: includes/class-mp-marked-products-receipt-orchestrator.php:356
+#: includes/class-mp-marked-products-receipt-orchestrator.php:362
 msgid "Ошибка ручной отправки чека маркированных (Robokassa): %s"
 msgstr ""
 
-#: includes/class-mp-marked-products-receipt-orchestrator.php:209
+#: includes/class-mp-marked-products-receipt-orchestrator.php:212
 msgid "Ошибка ручной отправки чека маркированных (ЮKassa): %s"
 msgstr ""
 
@@ -405,13 +406,13 @@ msgstr ""
 msgid "Плагин включён"
 msgstr ""
 
-#: includes/class-mp-marked-products-receipt-settings.php:462
-#: includes/class-mp-marked-products-receipt-settings.php:497
+#: includes/class-mp-marked-products-receipt-settings.php:476
+#: includes/class-mp-marked-products-receipt-settings.php:511
 msgid "Плагин отключён."
 msgstr ""
 
-#: includes/class-mp-marked-products-receipt-receipt-builder-rb.php:49
-#: includes/class-mp-marked-products-receipt-receipt-builder-yk.php:49
+#: includes/class-mp-marked-products-receipt-receipt-builder-rb.php:51
+#: includes/class-mp-marked-products-receipt-receipt-builder-yk.php:52
 msgid "Позиция заказа #%d: товар не найден."
 msgstr ""
 
@@ -448,31 +449,23 @@ msgstr ""
 msgid "Пустой или неожиданный HTTP-статус."
 msgstr ""
 
-#: includes/class-mp-marked-products-receipt-orchestrator.php:289
-msgid "Пустой список позиций чека Robokassa."
-msgstr ""
-
-#: includes/class-mp-marked-products-receipt-orchestrator.php:150
-msgid "Пустой список позиций чека ЮKassa."
-msgstr ""
-
 #: admin/class-mp-marked-products-receipt-admin.php:666
 msgid "Путь к логам:"
 msgstr ""
 
-#: includes/class-mp-marked-products-receipt-settings.php:555
+#: includes/class-mp-marked-products-receipt-settings.php:569
 msgid "Режим «category», но не выбраны категории."
 msgstr ""
 
-#: includes/class-mp-marked-products-receipt-settings.php:542
+#: includes/class-mp-marked-products-receipt-settings.php:556
 msgid "Режим «meta», но не задан meta key товара."
 msgstr ""
 
-#: includes/class-mp-marked-products-receipt-settings.php:547
+#: includes/class-mp-marked-products-receipt-settings.php:561
 msgid "Режим «taxonomy», но пустой slug таксономии."
 msgstr ""
 
-#: includes/class-mp-marked-products-receipt-settings.php:550
+#: includes/class-mp-marked-products-receipt-settings.php:564
 msgid "Режим «taxonomy», но список терминов пуст."
 msgstr ""
 
@@ -485,7 +478,7 @@ msgstr ""
 msgid "Сохранить настройки"
 msgstr ""
 
-#: includes/class-mp-marked-products-receipt-orchestrator.php:326
+#: includes/class-mp-marked-products-receipt-orchestrator.php:332
 msgid "Ссылка на чек маркированных (Robokassa): %s"
 msgstr ""
 
@@ -494,8 +487,8 @@ msgstr ""
 msgid "Статус:"
 msgstr ""
 
-#: includes/class-mp-marked-products-receipt-receipt-builder-rb.php:119
-#: includes/class-mp-marked-products-receipt-receipt-builder-yk.php:127
+#: includes/class-mp-marked-products-receipt-receipt-builder-rb.php:122
+#: includes/class-mp-marked-products-receipt-receipt-builder-yk.php:131
 msgid "Сумма зачёта больше суммы позиций; ограничено суммой позиций."
 msgstr ""
 
@@ -507,7 +500,7 @@ msgstr ""
 msgid "Требовать КИЗ в позиции заказа"
 msgstr ""
 
-#: includes/class-mp-marked-products-receipt-settings.php:559
+#: includes/class-mp-marked-products-receipt-settings.php:573
 msgid "Требуется КИЗ в позиции заказа, но не задан ключ мета позиции."
 msgstr ""
 

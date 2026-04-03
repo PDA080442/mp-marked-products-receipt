@@ -6,6 +6,9 @@ if (!defined('ABSPATH')) {
 /**
  * Builds YooKassa receipt payload (payment receipt) for **marked** line items only.
  *
+ * Суммы строк: используется `WC_Order_Item_Product::get_total()` (уже после скидок/купонов на строку) — §20.
+ * Доставка и прочие не–line_item позиции сюда не входят (v1; §20).
+ *
  * Marking (FFD 1.2) per YooKassa:
  * @see https://yookassa.ru/developers/payment-acceptance/receipts/54fz/other-services/marking
  * — `items.mark_code_info` (tag 1163), `items.measure`, optionally `items.mark_quantity`, `items.mark_mode`, etc.
@@ -61,6 +64,7 @@ final class MP_Marked_Products_Receipt_ReceiptBuilder_YK {
 				continue;
 			}
 
+			// line_total — итог строки WooCommerce после налогов и скидок на позицию (§20).
 			$line_total = (float) $item->get_total();
 			if ($line_total <= 0) {
 				continue;

@@ -6,6 +6,12 @@ if (!defined('ABSPATH')) {
 /**
  * Detects marked (traceable) products using Settings and optional order-line CIS checks.
  *
+ * Режимы (§27–§30):
+ * - `taxonomy` — `wp_get_post_terms` по ID товара/родителя, пересечение с `mp_mpr_marking_term_ids`.
+ * - `category` — категории через WC и при необходимости `wp_get_post_terms( product_cat )`, пересечение с настройками.
+ * - `meta` — `get_post_meta` по вариации и родителю; непустая строка после trim → marked.
+ * - `filter_only` — базово false; маркировка только через `mp_mpr_is_product_marked`. DEBUG в лог, если хука нет и нет ни одной marked-строки.
+ *
  * Filters:
  * - `mp_mpr_is_product_marked` (bool $marked, WC_Product $product, ?WC_Order_Item_Product $item)
  * - `mp_mpr_marking_payload` (array|null $payload, WC_Order_Item_Product $item)
@@ -124,6 +130,17 @@ final class MP_Marked_Products_Receipt_ProductMarker {
 			}
 		}
 
+		// §30: режим `filter_only` без зарегистрированного фильтра и без marked-позиций — подсказка в DEBUG.
+		if (
+			MP_Marked_Products_Receipt_Settings::get_marking_source() === 'filter_only'
+			&& $marked === []
+			&& !has_filter('mp_mpr_is_product_marked')
+		) {
+			MP_Marked_Products_Receipt_Logger::log('DEBUG', (int) $order->get_id(), 'filter_only_no_hook_no_marked', [
+				'note' => 'Register mp_mpr_is_product_marked or change marking source in settings.',
+			]);
+		}
+
 		return [
 			'marked' => $marked,
 			'unmarked' => $unmarked,
@@ -165,6 +182,7 @@ final class MP_Marked_Products_Receipt_ProductMarker {
 	private static function resolve_base_marked(WC_Product $product): bool {
 		$source = MP_Marked_Products_Receipt_Settings::get_marking_source();
 
+		// §30: истинная маркировка только через фильтр `mp_mpr_is_product_marked`.
 		if ($source === 'filter_only') {
 			return false;
 		}
@@ -175,6 +193,7 @@ final class MP_Marked_Products_Receipt_ProductMarker {
 			return $meta_key !== '' && self::product_meta_nonempty($product, $meta_key);
 		}
 
+		// §27: термы через `wp_get_post_terms` по вариации/родителю, пересечение с настроенными term_id.
 		if ($source === 'taxonomy') {
 			$taxonomy = MP_Marked_Products_Receipt_Settings::get_marking_taxonomy();
 			$want = MP_Marked_Products_Receipt_Settings::get_marking_term_ids();
@@ -190,6 +209,7 @@ final class MP_Marked_Products_Receipt_ProductMarker {
 			return count(array_intersect($want, $have)) > 0;
 		}
 
+		// §28: `product_cat` — WC API и резерв `wp_get_post_terms( product_cat )`.
 		if ($source === 'category') {
 			$want = MP_Marked_Products_Receipt_Settings::get_marking_category_ids();
 			if (empty($want)) {
@@ -221,6 +241,8 @@ final class MP_Marked_Products_Receipt_ProductMarker {
 	}
 
 	/**
+	 * §29: признак маркировки по meta — непустая строка после trim (скаляры приводим к строке).
+	 *
 	 * @param mixed $val
 	 * @return bool
 	 */
@@ -229,11 +251,18 @@ final class MP_Marked_Products_Receipt_ProductMarker {
 			return trim($val) !== '';
 		}
 		if (is_numeric($val)) {
-			return true;
+			if ((float) $val === 0.0) {
+				return false;
+			}
+
+			return trim((string) $val) !== '';
 		}
 		if (is_array($val)) {
 			foreach ($val as $v) {
 				if (is_string($v) && trim($v) !== '') {
+					return true;
+				}
+				if (is_numeric($v) && (float) $v !== 0.0 && trim((string) $v) !== '') {
 					return true;
 				}
 			}
@@ -269,7 +298,9 @@ final class MP_Marked_Products_Receipt_ProductMarker {
 		$out = [];
 
 		foreach (self::get_product_post_ids_to_scan($product) as $post_id) {
-			$terms = wp_get_post_terms((int) $post_id, $taxonomy, [ 'fields' => 'ids' ]);
+			$terms = wp_get_post_terms((int) $post_id, $taxonomy, [
+				'fields' => 'ids',
+			]);
 			if (is_wp_error($terms) || !is_array($terms)) {
 				continue;
 			}
@@ -285,6 +316,8 @@ final class MP_Marked_Products_Receipt_ProductMarker {
 	}
 
 	/**
+	 * §28: сначала WC `get_category_ids` (вариация + при необходимости родитель), затем резерв — `wp_get_post_terms( product_cat )`.
+	 *
 	 * @param WC_Product $product
 	 * @return array<int,int>
 	 */
@@ -299,6 +332,23 @@ final class MP_Marked_Products_Receipt_ProductMarker {
 			$parent = wc_get_product($product->get_parent_id());
 			if ($parent && method_exists($parent, 'get_category_ids')) {
 				$ids = array_map('intval', (array) $parent->get_category_ids());
+			}
+		}
+
+		if (empty($ids)) {
+			foreach (self::get_product_post_ids_to_scan($product) as $post_id) {
+				$terms = wp_get_post_terms((int) $post_id, 'product_cat', [
+					'fields' => 'ids',
+				]);
+				if (is_wp_error($terms) || !is_array($terms)) {
+					continue;
+				}
+				foreach ($terms as $tid) {
+					$tid = (int) $tid;
+					if ($tid > 0) {
+						$ids[] = $tid;
+					}
+				}
 			}
 		}
 

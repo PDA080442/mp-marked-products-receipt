@@ -15,6 +15,9 @@ final class MP_Marked_Products_Receipt_Admin {
 	private const NONCE_INSPECT_ORDER_YK = 'mp_mpr_inspect_order_yk';
 	private const NONCE_INSPECT_ORDER_RB = 'mp_mpr_inspect_order_rb';
 
+	/** §26: максимум позиций в preview инспектора заказа. */
+	private const INSPECT_PREVIEW_MAX_ITEMS = 50;
+
 	/** @var bool */
 	private static $settings_registered = false;
 
@@ -1296,8 +1299,10 @@ final class MP_Marked_Products_Receipt_Admin {
 	}
 
 	/**
+	 * §26: локальный preview для ЮKassa (без HTTP к API): OrderLinks → ReceiptBuilder → усечённый `built` + мета заказа.
+	 *
 	 * @param int $order_id
-	 * @return array<string,mixed>
+	 * @return array<string,mixed> Ключи: `order_found`, `order_id`, при успехе — `resolved`, `built`, `meta`.
 	 */
 	public static function inspect_order_yk(int $order_id): array {
 		$order = function_exists('wc_get_order') ? wc_get_order($order_id) : null;
@@ -1317,19 +1322,21 @@ final class MP_Marked_Products_Receipt_Admin {
 			'resolved' => $resolved,
 			'built' => self::truncate_built_preview($built),
 			'meta' => [
-				'mp_mpr_yk_sent' => get_post_meta($order_id, 'mp_mpr_yk_sent', true),
-				'mp_mpr_yk_receipt_id' => get_post_meta($order_id, 'mp_mpr_yk_receipt_id', true),
-				'mp_mpr_yk_error' => get_post_meta($order_id, 'mp_mpr_yk_error', true),
-				'mp_mpr_yk_idempotence_key' => get_post_meta($order_id, 'mp_mpr_yk_idempotence_key', true),
-				'mp_mpr_yk_source_payment_id' => get_post_meta($order_id, MP_Marked_Products_Receipt_OrderLinks_YK::META_SOURCE_PAYMENT_ID, true),
-				'mp_mpr_yk_settlement_amount' => get_post_meta($order_id, MP_Marked_Products_Receipt_OrderLinks_YK::META_SETTLEMENT_AMOUNT, true),
+				'mp_mpr_yk_sent' => $order->get_meta('mp_mpr_yk_sent', true),
+				'mp_mpr_yk_receipt_id' => $order->get_meta('mp_mpr_yk_receipt_id', true),
+				'mp_mpr_yk_error' => $order->get_meta('mp_mpr_yk_error', true),
+				'mp_mpr_yk_idempotence_key' => $order->get_meta('mp_mpr_yk_idempotence_key', true),
+				'mp_mpr_yk_source_payment_id' => $order->get_meta(MP_Marked_Products_Receipt_OrderLinks_YK::META_SOURCE_PAYMENT_ID, true),
+				'mp_mpr_yk_settlement_amount' => $order->get_meta(MP_Marked_Products_Receipt_OrderLinks_YK::META_SETTLEMENT_AMOUNT, true),
 			],
 		];
 	}
 
 	/**
+	 * §26: локальный preview для Robokassa (без HTTP к API): OrderLinks → ReceiptBuilder → усечённый `built` + мета заказа.
+	 *
 	 * @param int $order_id
-	 * @return array<string,mixed>
+	 * @return array<string,mixed> Ключи: `order_found`, `order_id`, при успехе — `resolved`, `built`, `meta`.
 	 */
 	public static function inspect_order_rb(int $order_id): array {
 		$order = function_exists('wc_get_order') ? wc_get_order($order_id) : null;
@@ -1349,26 +1356,29 @@ final class MP_Marked_Products_Receipt_Admin {
 			'resolved' => $resolved,
 			'built' => self::truncate_built_preview($built),
 			'meta' => [
-				'mp_mpr_rb_sent' => get_post_meta($order_id, 'mp_mpr_rb_sent', true),
-				'mp_mpr_rb_receipt_id' => get_post_meta($order_id, 'mp_mpr_rb_receipt_id', true),
-				'mp_mpr_rb_receipt_url' => get_post_meta($order_id, 'mp_mpr_rb_receipt_url', true),
-				'mp_mpr_rb_error' => get_post_meta($order_id, 'mp_mpr_rb_error', true),
-				'mp_mpr_rb_request_id' => get_post_meta($order_id, 'mp_mpr_rb_request_id', true),
-				'mp_mpr_rb_source_id' => get_post_meta($order_id, MP_Marked_Products_Receipt_OrderLinks_RB::META_SOURCE_ID, true),
-				'mp_mpr_rb_settlement_amount' => get_post_meta($order_id, MP_Marked_Products_Receipt_OrderLinks_RB::META_SETTLEMENT_AMOUNT, true),
+				'mp_mpr_rb_sent' => $order->get_meta('mp_mpr_rb_sent', true),
+				'mp_mpr_rb_receipt_id' => $order->get_meta('mp_mpr_rb_receipt_id', true),
+				'mp_mpr_rb_receipt_url' => $order->get_meta('mp_mpr_rb_receipt_url', true),
+				'mp_mpr_rb_error' => $order->get_meta('mp_mpr_rb_error', true),
+				'mp_mpr_rb_request_id' => $order->get_meta('mp_mpr_rb_request_id', true),
+				'mp_mpr_rb_source_id' => $order->get_meta(MP_Marked_Products_Receipt_OrderLinks_RB::META_SOURCE_ID, true),
+				'mp_mpr_rb_settlement_amount' => $order->get_meta(MP_Marked_Products_Receipt_OrderLinks_RB::META_SETTLEMENT_AMOUNT, true),
 			],
 		];
 	}
 
 	/**
+	 * §26 п.148: не отдавать в UI сотни строк позиций — максимум 50 + служебные поля.
+	 *
 	 * @param array<string,mixed> $built
 	 * @return array<string,mixed>
 	 */
 	private static function truncate_built_preview(array $built): array {
 		$out = $built;
-		if (!empty($out['items']) && is_array($out['items']) && count($out['items']) > 50) {
+		$max = self::INSPECT_PREVIEW_MAX_ITEMS;
+		if (!empty($out['items']) && is_array($out['items']) && count($out['items']) > $max) {
 			$n = count($out['items']);
-			$out['items'] = array_slice($out['items'], 0, 50);
+			$out['items'] = array_slice($out['items'], 0, $max);
 			$out['_truncated'] = true;
 			$out['_items_total'] = $n;
 		}

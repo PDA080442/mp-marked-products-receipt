@@ -37,6 +37,12 @@ final class MP_Marked_Products_Receipt_Admin {
 		);
 	}
 
+	/**
+	 * §25: Settings API — один раз на `admin_init` (guard ниже), группа `mp_mpr_settings`
+	 * (в плане фигурировало имя `mp_mpr_common_group`; фактическое имя должно совпадать с `settings_fields()`).
+	 * Правила: `type => array`, `sanitize_rules_yk` / `sanitize_rules_rb`. Секреты: `sanitize_yk_secret_key` /
+	 * `sanitize_rb_password1` не затирают значение при пустой строке в POST.
+	 */
 	public static function register_settings(): void {
 		if (self::$settings_registered) {
 			return;
